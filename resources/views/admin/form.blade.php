@@ -1,76 +1,18 @@
-﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <!--[if IE]>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <![endif]-->
-    <title>FREE RESPONSIVE HORIZONTAL ADMIN</title>
-    <!-- BOOTSTRAP CORE STYLE  -->
-    <link href="{{asset("asset/css/bootstrap.css")}}" rel="stylesheet" />
-    <!-- FONT AWESOME STYLE  -->
-    <link href="{{asset("asset/css/font-awesome.css")}}" rel="stylesheet" />
-    <!-- CUSTOM STYLE  -->
-    <link href="{{asset("asset/css/style.css")}}" rel="stylesheet" />
-    <!-- GOOGLE FONT -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-
-</head>
-<body>
-@if (session('success'))
-    <div>
-        {{ session('success') }}
-    </div>
-@endif
-    <div class="navbar navbar-inverse set-radius-zero" >
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <h1>ADMIN</h1>
-            </div>
-
-            <div class="right-div">
-                <a href="{{route('admin.logout')}}" class="btn btn-info pull-right">LOG ME OUT</a>
-            </div>
+﻿@extends('layouts.header')
+@section('title', 'Forms')
+@section('content')
+    @if (session('success'))
+        <div>
+            {{ session('success') }}
         </div>
-    </div>
-    <!-- LOGO HEADER END-->
-    <section class="menu-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="navbar-collapse collapse ">
-                        <ul id="menu-top" class="nav navbar-nav navbar-right">
-                            <li><a href="{{route("admin.adminDashboard")}}" class="menu-top-active">DASHBOARD</a></li>
-
-                            <li><a href="{{route("admin.adminForm")}}">FORMS</a></li>
-
-
-                            <li><a href="{{route("admin.adminTable")}}">TABLES</a></li>
-
-
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-     <!-- MENU SECTION END-->
+    @endif
+{{--    <!-- MENU SECTION END-->--}}
     <div class="content-wrapper">
         <div class="container">
             <div class="row pad-botm">
                 <div class="col-md-12">
                     <h4 class="header-line">FORM EXAMPLES</h4>
                 </div>
-
             </div>
             <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -81,7 +23,6 @@
                         <div class="panel-body">
                             <form action="{{route('admin.updateUser')}}" method="post" role="form">
                                 @csrf
-{{--                                @dd($userInfo)--}}
                                 <input type="hidden" name="id" value="{{$userInfo->id}}">
                                 <div class="form-group">
                                     <label>Name</label>
@@ -188,7 +129,7 @@
             </div>
 
             <!--/.ROW-->
-  <div style="display: flex">
+            <div style="display: flex; overflow-x: scroll; width: 100%;">
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -218,7 +159,6 @@
                 </div>
             </div>
 
-{{--      @dd($userInfo)--}}
             @foreach($userInfo->educations as $education)
 
                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -250,7 +190,7 @@
                 </div>
             @endforeach
  </div>
-            <div style="display: flex">
+            <div style="display: flex; overflow-x: auto; width: 100%;">
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -280,7 +220,6 @@
                 </div>
             </div>
 
-
             @foreach($userInfo->skills as $skill)
                 <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="panel panel-default">
@@ -290,7 +229,6 @@
                             <button ><a href="{{route('admin.deleteSkills',[$skill->id])}}"  class="menu-top-active">X</a></button>
                         </div>
                         <div class="panel-body">
-
                             <form action="{{route("admin.updateSkills")}}" method="post" role="form" >
                                 @csrf
                                 <input type="hidden" name="id" value="{{$skill->id}}">
@@ -303,14 +241,12 @@
                                 </div>
                                 <button type="submit" class="btn btn-danger">Update </button>
                             </form>
-
-
                         </div>
                     </div>
                 </div>
             @endforeach
         </div>
-            <div style="display: flex">
+            <div style="display: flex; overflow-x: auto; width: 100%;">
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -324,7 +260,7 @@
                             <div class="form-group has-success">
                                 <label class="control-label" for="success">Image</label>
                                 <input type="file" class="form-control" id="success" name="image"/>
-                                @error('image_full_path')
+                                @error('image')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -332,6 +268,9 @@
                             <div class="form-group has-error">
                                 <label class="control-label" for="error">LInks</label>
                                 <input type="text" class="form-control" id="error" name="links"  />
+                                @error('links')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <button type="submit" class="btn btn-danger">Save </button>
                         </form>
@@ -391,9 +330,9 @@
                 </div>
             @endforeach
             </div>
-            <div style="display: flex">
+            <div style="display: flex; overflow-x: auto; width: 100%;">
 
-            <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-6 col-sm-6 col-xs-12" >
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h1> Create Additional links </h1>
@@ -459,9 +398,9 @@
                             </div>
                         </div>
                     @endforeach
-
-
                     </div>
+
+        <div style="display: flex; overflow-x: auto; width: 100%;">
                 <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -469,7 +408,6 @@
                             Create Image
                         </div>
                         <div class="panel-body">
-
                             <form action="{{route('admin.createImage')}}" method="post" role="form" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group has-success">
@@ -479,12 +417,8 @@
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-
-
                                 <button type="submit" class="btn btn-danger">Save </button>
                             </form>
-
-
                         </div>
                         @foreach($userInfo->images as $images)
                             <div class="col-md-6 col-sm-6 col-xs-12" style="width: 300px">
@@ -520,43 +454,53 @@
 
                                             <button type="submit" class="btn btn-danger">Update</button>
                                         </form>
-
-
                                     </div>
                                 </div>
                             </div>
                         @endforeach
+
+                        <div >
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h1> Create PDF section </h1>
+                                        Create PDF
+                                    </div>
+                                    <div class="panel-body">
+
+                                        <form action="{{route('admin.createPDF')}}" method="post" role="form" enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="form-group has-success">
+                                                <label class="control-label" for="success">PDF</label>
+                                                <input type="file" class="form-control" id="success" name="pdf"/>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-danger">Save </button>
+                                        </form>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div >
+                        @foreach($pdf as $pdfs)
+                            <div>
+                                <p>{{ $pdfs->pdf }}</p>
+                                <form action="{{ route('admin.deletePDF') }}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                    <input type="hidden" name="id" value="{{ $pdfs->id }}">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        @endforeach
                     </div>
 
-                </div>
-                </div>
 
 
 
-
-            </div>
-        </div>
     </div>
 
 
-     <!-- CONTENT-WRAPPER SECTION END-->
-    <section class="footer-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                   &copy; 2014 Yourdomain.com |<a href="http://www.binarytheme.com/" target="_blank"  > Designed by : binarytheme.com</a>
-                </div>
-
-            </div>
-        </div>
-    </section>
-      <!-- FOOTER SECTION END-->
-    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
-    <!-- CORE JQUERY  -->
-    <script src="{{ asset("asset/js/jquery-1.10.2.js") }}"></script>
-    <!-- BOOTSTRAP SCRIPTS  -->
-    <script src="{{ asset("asset/js/bootstrap.js") }}"></script>
-      <!-- CUSTOM SCRIPTS  -->
-    <script src="{{ asset("asset/js/custom.js") }}"></script>
-</body>
-</html>
+@endsection

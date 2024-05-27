@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Interface\ColumnsInterface;
 use App\Interface\ViewInterface;
 use App\Models\Additional_links;
+use App\Models\pdf;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -25,12 +26,13 @@ class ReadService implements ViewInterface, ColumnsInterface
     {
         $userInfo = User::query()->find(auth()->id());
         $links=Additional_links::query()->get();
+        $pdf=pdf::query()->get();
 
         if ($userInfo !== null)
             $userInfo->load(['educations','informations','skills','posts.additionalLinks','images']);
 
         return view(self::VIEW_ADMIN_FORM,compact(
-                'userInfo','links'
+                'userInfo','links','pdf'
             )
         );
     }

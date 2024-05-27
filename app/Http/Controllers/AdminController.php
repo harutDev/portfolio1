@@ -40,7 +40,7 @@ use App\Http\Services\SkillsService;
 use App\Http\Services\UserService;
 use App\Interface\ColumnsInterface;
 use App\Interface\ViewInterface;
-use App\Models\{Additional_links, Educations, Images, Informations, Post, Skills, User, Visitors};
+use App\Models\{Additional_links, Educations, Images, Informations, PDF, Post, Skills, User, Visitors};
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -50,9 +50,6 @@ use Illuminate\Foundation\Application;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller implements ViewInterface, ColumnsInterface
@@ -401,4 +398,26 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
 
         return redirect()->back();
     }
+    public function createPDF(Request$request): RedirectResponse
+    {
+        $request->validate([
+            'pdf' => 'required|mimes:pdf|max:2048',
+        ]);
+        $file = $request->file('pdf')->getClientOriginalName();
+
+        pdf::query()->create([
+            'pdf' => $file,
+        ]);
+
+        return redirect()->back();
+
+    }
+    public function deletePDF(Request $request): RedirectResponse
+    {
+
+        pdf::query()->where('id',$request->id)->delete();
+
+        return redirect()->back();
+    }
+
 }

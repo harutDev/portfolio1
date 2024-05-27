@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Post extends Model
 {
@@ -17,8 +16,8 @@ class Post extends Model
         'user_id',
     ];
 
-    public function additionalLinks(): HasMany
+    public function additionalLinks(): HasOne
     {
-        return $this->hasMany(Additional_links::class,'post_id','id');
+        return $this->hasOne(Additional_links::class,'post_id','id');
     }
 }

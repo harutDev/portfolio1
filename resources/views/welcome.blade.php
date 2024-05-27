@@ -23,12 +23,74 @@ http://www.tooplate.com/view/2109-the-card
     <link rel="stylesheet" href="{{ asset('asset/css/magnific-popup.css') }}"/>
     <link rel="stylesheet" href="{{ asset('asset/css/tooplate-style.css') }}"/>
     <style>
-        .truncate {
-            width: inherit; /* Adjust the width as needed */
-            white-space: nowrap;
+
+        .custom-figure {
+            width: 200px;
+            height: 200px;
             overflow: hidden;
-            text-overflow: ellipsis;
+            margin: 10px;
+            position: relative;
         }
+
+        .custom-figure img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .custom-figure figcaption {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+        .wrapper{
+            margin:2px 0;
+        }
+        a.first:after{
+            left:0;
+        }
+        a.before:hover:before,a.after:hover:after{
+            width:100%;
+        }
+        a,a:visited,a:hover,a:active{
+            -webkit-backface-visibility:hidden;
+            backface-visibility:hidden;
+            position:relative;
+            transition:0.5s color ease;
+            text-decoration:none;
+            color:#81b3d2;
+            font-size:1.8em;
+        }
+        a:hover{
+            color:#d73444;
+        }
+        a.before:before,a.after:after{
+            content: "";
+            transition:0.5s all ease;
+            -webkit-backface-visibility:hidden;
+            backface-visibility:hidden;
+            position:absolute;
+        }
+        a.before:before{
+            top:-0.25em;
+        }
+        a.after:after{
+            bottom:-0.25em;
+        }
+        a.before:before,a.after:after{
+            height:5px;
+            height:0.35rem;
+            width:0;
+            background:#d73444;
+        }
+        a.first:after{
+            left:0;
+        }
+
     </style>
     <!-- Templatemo style -->
 </head>
@@ -111,17 +173,22 @@ http://www.tooplate.com/view/2109-the-card
                 <div class="tm-content">
                     <!-- Section 0 Introduction -->
                     <section class="tm-section tm-section-0">
-                        <h2 class="tm-section-title mb-3 font-weight-bold">
-                            Introduction
+                        <h2 class="tm-section-title mb-3 font-weight-bold" style="color: black">
+                            My Projects
                         </h2>
                         <div class="tm-textbox tm-bg-dark">
+                            @foreach($userInfo->posts as $item)
+                                <p class="mb-0 tm-site-subtitle">
+                                    @if(!is_null($item->additionalLinks))
+                                        <div class="wrapper">
+                                            <a class="first after" href="{{$item->additionalLinks->name}}">{{$item->links}}</a>
+                                        </div>
+                                    @endif
+                                </p>
+                            @endforeach
 
-                            <p class="mb-0 truncate">
-
-                                {{$userInfo->informations[0]->about_me ?? ''}}
-                            </p>
                         </div>
-                        <a href="#" id="tm_about_link" data-linkid="1" class="tm-link">Read More</a>
+                        <a href="#" id="tm_about_link" data-linkid="1" class="tm-link">Next</a>
                     </section>
 
                     <!-- Section 1 About Me -->
@@ -149,10 +216,10 @@ http://www.tooplate.com/view/2109-the-card
 
                                 @if(count($userInfo->posts) === 0)
                                     @for($i = 1; $i < 10; ++$i)
-                                        <figure class="effect-goliath tm-gallery-item">
-                                            <img src="{{asset('asset/img/0'.$i)}}.jpg"
+                                        <figure  class="effect-goliath tm-gallery-item custom-figure"  >
+                                            <img  src="{{asset('asset/img/0'.$i)}}.jpg"
                                                  alt="">
-                                            <figcaption>
+                                            <figcaption style="width: 150px; height: 150px ">
                                                 <h2>
                                                     <span>image_{{$i}}</span>
                                                 </h2>
@@ -164,7 +231,7 @@ http://www.tooplate.com/view/2109-the-card
                                     @endfor
                                 @else
                                     @foreach($userInfo->posts as $item)
-                                        <figure class="effect-goliath tm-gallery-item">
+                                        <figure class="effect-goliath tm-gallery-item custom-figure">
                                             <img src="{{ asset('storage/assets/images/'.$item->image_pate) }}"
                                                  alt={{ $item->image_name}}>
                                             <figcaption>

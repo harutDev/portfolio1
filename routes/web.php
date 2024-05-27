@@ -33,6 +33,7 @@ Route::group(['prefix' => 'admins', 'as' => 'admin.'], function () {
     Route::get('/delete-education/{id}', [AdminController::class, 'deleteEducation'])->name('deleteEducation');
     Route::get('/delete-links/{id}', [AdminController::class, 'deleteLinks'])->name('deleteLinks');
     Route::delete('/delete-image', [AdminController::class, 'deleteImage'])->name('deleteImage');
+    Route::delete('/delete-pdf', [AdminController::class, 'deletePDF'])->name('deletePDF');
 
     //post
     Route::post('/login', [AdminController::class, 'login'])->name('submit_login');
@@ -49,6 +50,7 @@ Route::group(['prefix' => 'admins', 'as' => 'admin.'], function () {
     Route::post('/update-links', [AdminController::class, 'updateLinks'])->name('updateLinks');
     Route::post('/create-image', [AdminController::class, 'createImage'])->name('createImage');
     Route::post('/update-image', [AdminController::class, 'updateImage'])->name('updateImage');
+    Route::post('/create-pdf', [AdminController::class, 'createPDF'])->name('createPDF');
 
 
 
