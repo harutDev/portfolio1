@@ -156,6 +156,12 @@ http://www.tooplate.com/view/2109-the-card
                         {{ $item->name}}
                     @endforeach
                 </p>
+                @foreach($userInfo->files as $item)
+                    @php
+                        $param = explode('/',$item->path);
+                    @endphp
+                    <p>PDF: <a href="{{route("download-pdf",['file' => $param[3] ])}}">{{ $item->name }}</a></p>
+                @endforeach
                 @if(session('message'))
                     <div class="{{session('message') === 'Mail sent' ? 'alert alert-success' : 'alert alert-danger'}}">
                         {{ session('message') }}
@@ -177,6 +183,7 @@ http://www.tooplate.com/view/2109-the-card
                             My Projects
                         </h2>
                         <div class="tm-textbox tm-bg-dark">
+                            @if($userInfo !== null && $userInfo->posts !== null)
                             @foreach($userInfo->posts as $item)
                                 <p class="mb-0 tm-site-subtitle">
                                     @if(!is_null($item->additionalLinks))
@@ -186,8 +193,11 @@ http://www.tooplate.com/view/2109-the-card
                                     @endif
                                 </p>
                             @endforeach
-
+                                    @else
+                                        <p>No projects available.</p>
+                                    @endif
                         </div>
+
                         <a href="#" id="tm_about_link" data-linkid="1" class="tm-link">Next</a>
                     </section>
 
@@ -356,9 +366,15 @@ http://www.tooplate.com/view/2109-the-card
         $(".tm-section").fadeOut(0);
         $(".tm-section-0").fadeIn();
 
+        {{--let imageUrls = @json($userInfo->images->pluck('image_path'));--}}
+        @if($userInfo !== null && $userInfo->images !== null)
         let imageUrls = @json($userInfo->images->pluck('image_path'));
-        console.log(imageUrls[0])
-        bgCycle = $("body").backgroundCycle({
+        @else
+        let imageUrls = [];
+        @endif
+
+
+            bgCycle = $("body").backgroundCycle({
 
             imageUrls: [
                typeof (imageUrls[0])=="undefined" ?  "asset/img/photo-02.jpg" : 'storage/assets/images/'+imageUrls[0],

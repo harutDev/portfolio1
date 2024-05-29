@@ -18,28 +18,43 @@
             <div class="col-md-3 col-sm-3 col-xs-6">
                 <div class="alert alert-info back-widget-set text-center">
                     <i class="fa fa-history fa-5x"></i>
-{{--                    @dd(count($userInfo->visitors))--}}
+                    @if($userInfo !== null && isset($userInfo->visitors))
                     <h3> {{count($userInfo->visitors)}} notification</h3>
-
+                    @else
+                        <h3>No notifications</h3>
+                    @endif
                 </div>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-6">
                 <div class="alert alert-success back-widget-set text-center">
                     <i class="fa fa-bars fa-5x"></i>
+                    @if($userInfo !== null && isset($userInfo->posts))
                     <h3> {{count($userInfo->posts)}} post</h3>
+                    @else
+                        <h3>No posts</h3>
+                    @endif
                 </div>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-6">
                 <div class="alert alert-warning back-widget-set text-center">
                     <i class="fa fa-recycle fa-5x"></i>
-                    <h3>{{count($userInfo->visitors)}} visit</h3>
+                    @if($userInfo !== null && isset($userInfo->visitors))
 
+                    <h3>{{count($userInfo->visitors)}} visit</h3>
+                    @else
+                        <h3>No notifications</h3>
+                    @endif
                 </div>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-6">
                 <div class="alert alert-danger back-widget-set text-center">
                     <i class="fa fa-briefcase fa-5x"></i>
+                    @if($userInfo !== null && isset($userInfo->visitors))
+
                     <h3>{{count($userInfo->skills)}} skill </h3>
+                    @else
+                        <h3>No skills</h3>
+                    @endif
                     That Should Be Resolved Now
                 </div>
             </div>
@@ -52,18 +67,30 @@
             <div class="col-md-8 col-sm-8 col-xs-12">
                 <div id="carousel-example" class="carousel slide slide-bdr" data-ride="carousel">
                     <div class="carousel-inner">
+                        @if($userInfo !== null && isset($userInfo->images) && count($userInfo->images) > 0)
                         @foreach($userInfo->images as $key => $image)
                             <div class="item {{ $key == 0 ? 'active' : '' }}">
                                 <img src="{{ asset('storage/assets/images/' . $image->image_path) }}" alt="{{ $image->image_name }}" />
                             </div>
                         @endforeach
+                        @else
+                            <div class="item active">
+                                <img src="{{ asset('default-image.jpg') }}" alt="Default Image" />
+                            </div>
+                        @endif
                     </div>
 
                     <!--INDICATORS-->
                     <ol class="carousel-indicators">
+                        @if($userInfo !== null && isset($userInfo->images) && count($userInfo->images) > 0)
                         @foreach($userInfo->images as $key => $image)
                             <li data-target="#carousel-example" data-slide-to="{{ $key }}" class="{{ $key == 0 ? 'active' : '' }}"></li>
                         @endforeach
+                        @else
+                            <div class="item active">
+                                <img src="{{ asset('default-image.jpg') }}" alt="Default Image" />
+                            </div>
+                        @endif
                     </ol>
 
                     <!--PREVIUS-NEXT BUTTONS-->
@@ -85,22 +112,23 @@
 
 
                     <div class="panel-body chat-widget-main">
-                        @foreach($userInfo->visitors as $item)
-                            @php
-                                $timeNow = \Carbon\Carbon::now();
-                                $isOlderThanOneDay = $item['created_at']->diffInDays($timeNow) > 1;
+                        @if($userInfo !== null && isset($userInfo->visitors) )
+                            @foreach($userInfo->visitors as $item)
+                                @php
+                                    $timeNow = \Carbon\Carbon::now();
+                                    $isOlderThanOneDay = $item['created_at']->diffInDays($timeNow) > 1;
 
-                            @endphp
-                            <div class="chat-widget{{ $isOlderThanOneDay ? '-left' : '-right'}}">
-                                {{$item->message}}
-                            </div>
+                                @endphp
+                                <div class="chat-widget{{ $isOlderThanOneDay ? '-left' : '-right'}}">
+                                    {{$item->message}}
+                                </div>
 
-                            <div class="chat-widget-name{{ $isOlderThanOneDay ? '-left' : '-right'}}">
-                                <h4> {{$item->name}}</h4>
-                                <h5>{{$item->email}}</h5>
-                            </div>
-                        @endforeach
-
+                                <div class="chat-widget-name{{ $isOlderThanOneDay ? '-left' : '-right'}}">
+                                    <h4> {{$item->name}}</h4>
+                                    <h5>{{$item->email}}</h5>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
 
                 </div>
@@ -120,34 +148,33 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-bordered table-hover">
                                 <thead>
-                                <tr>
-
-                                    <th>Ip Address</th>
-                                    <th>User Agent</th>
-                                    <th>Referer</th>
-                                    <th>Visit time</th>
-                                    <th>Country Name</th>
-                                    <th>Region Name</th>
-                                    <th>City</th>
-                                    <th>Created at</th>
-                                </tr>
+                                    <tr>
+                                        <th>Ip Address</th>
+                                        <th>User Agent</th>
+                                        <th>Referer</th>
+                                        <th>Visit time</th>
+                                        <th>Country Name</th>
+                                        <th>Region Name</th>
+                                        <th>City</th>
+                                        <th>Created at</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($userInfo->visitors as $item)
-
-                                <tr>
-                                    <td>{{$item}}</td>
-                                    <td>{{$item->ip_address}}</td>
-                                    <td>{{$item->user_agent}}</td>
-                                    <td>{{$item->referrer}}</td>
-                                    <td>{{$item->visit_time}}</td>
-                                    <td>{{$item->country_name}}</td>
-                                    <td>{{$item->region_name}}</td>
-                                    <td>{{$item->city}}</td>
-                                    <td>{{$item->created_at}}</td>
-                                </tr>
-                                @endforeach
-
+                                    @if($userInfo !== null && isset($userInfo->visitors) )
+                                        @foreach($userInfo->visitors as $item)
+                                        <tr>
+                                            <td>{{$item}}</td>
+                                            <td>{{$item->ip_address}}</td>
+                                            <td>{{$item->user_agent}}</td>
+                                            <td>{{$item->referrer}}</td>
+                                            <td>{{$item->visit_time}}</td>
+                                            <td>{{$item->country_name}}</td>
+                                            <td>{{$item->region_name}}</td>
+                                            <td>{{$item->city}}</td>
+                                            <td>{{$item->created_at}}</td>
+                                        </tr>
+                                        @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -233,25 +260,3 @@
 </div>
 
 @endsection
-{{--<!-- CONTENT-WRAPPER SECTION END-->--}}
-{{--<section class="footer-section">--}}
-{{--    <div class="container">--}}
-{{--        <div class="row">--}}
-{{--            <div class="col-md-12">--}}
-{{--                &copy; 2014 Yourdomain.com |<a href="http://www.binarytheme.com/" target="_blank"  > Designed by : binarytheme.com</a>--}}
-{{--            </div>--}}
-
-{{--        </div>--}}
-{{--    </div>--}}
-{{--</section>--}}
-{{--<!-- FOOTER SECTION END-->--}}
-{{--<!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->--}}
-{{--<!-- CORE JQUERY  -->--}}
-{{--<script src="{{asset("asset/js/jquery-1.10.2.js")}}"></script>--}}
-{{--<!-- BOOTSTRAP SCRIPTS  -->--}}
-{{--<script src="{{asset("asset/js/bootstrap.js")}}"></script>--}}
-{{--<!-- CUSTOM SCRIPTS  -->--}}
-{{--<script src="{{asset("asset/js/custom.js")}}"></script>--}}
-
-{{--</body>--}}
-{{--</html>--}}

@@ -99,7 +99,7 @@
                             About Me
                         </div>
                         <div class="panel-body">
-                            @if($userInfo->informations !== null)
+                            @if($userInfo->informations !== null && count($userInfo->informations) > 0)
                                 <form action="{{route('admin.updateAboutMe')}}" method="post" role="form">
                                     @csrf
                                     <input type="hidden" name="id" value="{{$userInfo->informations[0]->id}}">
@@ -329,10 +329,12 @@
                     </div>
                 </div>
             @endforeach
-            </div>
-            <div style="display: flex; overflow-x: auto; width: 100%;">
 
-            <div class="col-md-6 col-sm-6 col-xs-12" >
+
+            </div>
+
+
+            <div class="col-md-6 col-sm-6 col-xs-12" style="display: flex !important; " >
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h1> Create Additional links </h1>
@@ -399,8 +401,9 @@
                         </div>
                     @endforeach
                     </div>
+                </div>
 
-        <div style="display: flex; overflow-x: auto; width: 100%;">
+
                 <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -458,9 +461,10 @@
                                 </div>
                             </div>
                         @endforeach
+                    </div>
+                </div>
 
-                        <div >
-                            <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="col-md-6 col-sm-6 col-xs-12" style="width: 500px ; display: flex">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h1> Create PDF section </h1>
@@ -472,7 +476,7 @@
                                             @csrf
                                             <div class="form-group has-success">
                                                 <label class="control-label" for="success">PDF</label>
-                                                <input type="file" class="form-control" id="success" name="pdf"/>
+                                                <input type="file" class="form-control" id="success" name="name"/>
                                             </div>
 
                                             <button type="submit" class="btn btn-danger">Save </button>
@@ -482,25 +486,25 @@
                                     </div>
                                 </div>
 
-                            </div>
-                        </div >
-                        @foreach($pdf as $pdfs)
-                            <div>
-                                <p>{{ $pdfs->pdf }}</p>
+
+
+                        @foreach( $file as $files)
+                            <div class="col-md-6 col-sm-6 col-xs-12" style="width: 500px">
+                                <p>{{ $files->name }}</p>
                                 <form action="{{ route('admin.deletePDF') }}" method="post">
                                     @csrf
                                     @method('delete')
-                                    <input type="hidden" name="id" value="{{ $pdfs->id }}">
+                                    <input type="hidden" name="id" value="{{ $files->id }}">
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </div>
                         @endforeach
-                    </div>
+                        </div>
 
 
 
 
-    </div>
+
 
 
 @endsection

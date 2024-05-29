@@ -20,8 +20,10 @@ Route::resource('users', UserController::class);
 Route::get('/', [AdminController::class, 'welcome'])->name('welcome');
 Route::get('/admin', [AdminController::class, 'dashboard']);
 Route::get('/login', [AdminController::class, 'getLogin'])->name('login');
+Route::get('/download/{file}', [AdminController::class, 'downloadPDF'])->name('download-pdf');
 Route::post('/registration', [AdminController::class, 'registration'])->name('submit_registration');
 Route::post('/send', [UserController::class, 'send'])->name('send');
+
 Route::group(['prefix' => 'admins', 'as' => 'admin.'], function () {
     //get
     Route::get('/adminDashboard', [AdminController::class, 'adminDashboard'])->name('adminDashboard');
@@ -51,8 +53,4 @@ Route::group(['prefix' => 'admins', 'as' => 'admin.'], function () {
     Route::post('/create-image', [AdminController::class, 'createImage'])->name('createImage');
     Route::post('/update-image', [AdminController::class, 'updateImage'])->name('updateImage');
     Route::post('/create-pdf', [AdminController::class, 'createPDF'])->name('createPDF');
-
-
-
-
 });

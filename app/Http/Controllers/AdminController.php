@@ -2,45 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\DTO\CreateAboutMeDTO;
-use App\DTO\CreateEducationDTO;
-use App\DTO\CreateLinkDTO;
-use App\DTO\CreatePostDTO;
-use App\DTO\CreateSkillDTO;
-use App\DTO\DeleteEducationDTO;
-use App\DTO\DeleteLinkDTO;
-use App\DTO\DeletePostDTO;
-use App\DTO\DeleteSkillsDTO;
-use App\DTO\LoginDTO;
-use App\DTO\RegisterDTO;
-use App\DTO\UpdateAboutMeDTO;
-use App\DTO\UpdateEducationDTO;
-use App\DTO\UpdateLinkDTO;
-use App\DTO\UpdatePostDTO;
-use App\DTO\UpdateSkillDTO;
-use App\DTO\UserUpdateDTO;
-use App\Http\Requests\CreateAboutMeRequest;
-use App\Http\Requests\CreateEducationRequest;
-use App\Http\Requests\CreateImageRequest;
-use App\Http\Requests\CreateLinkRequest;
-use App\Http\Requests\CreatePostRequest;
-use App\Http\Requests\CreateSkillRequest;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\StoreRegisterRequest;
-use App\Http\Requests\UpdateAboutMeRequest;
-use App\Http\Requests\UpdateEducationRequest;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Services\AdditionalLinksService;
-use App\Http\Services\AuthService;
-use App\Http\Services\EducationsService;
-use App\Http\Services\InformationsService;
-use App\Http\Services\PostService;
-use App\Http\Services\ReadService;
-use App\Http\Services\SkillsService;
-use App\Http\Services\UserService;
+use App\DTO\{CreateAboutMeDTO,
+    CreateEducationDTO,
+    CreateLinkDTO,
+    CreatePostDTO,
+    CreateSkillDTO,
+    DeleteEducationDTO,
+    DeleteLinkDTO,
+    DeletePostDTO,
+    DeleteSkillsDTO,
+    LoginDTO,
+    RegisterDTO,
+    UpdateAboutMeDTO,
+    UpdateEducationDTO,
+    UpdateLinkDTO,
+    UpdatePostDTO,
+    UpdateSkillDTO,
+    UserUpdateDTO};
+use App\Http\Requests\{CreateAboutMeRequest,
+    CreateEducationRequest,
+    CreateImageRequest,
+    CreateLinkRequest,
+    CreatePostRequest,
+    CreateSkillRequest,
+    LoginRequest,
+    StoreRegisterRequest,
+    UpdateAboutMeRequest,
+    UpdateEducationRequest,
+    UpdateUserRequest};
+use App\Http\Services\{AdditionalLinksService,
+    AuthService,
+    EducationsService,
+    InformationsService,
+    PostService,
+    ReadService,
+    SkillsService,
+    UserService};
 use App\Interface\ColumnsInterface;
 use App\Interface\ViewInterface;
-use App\Models\{Additional_links, Educations, Images, Informations, PDF, Post, Skills, User, Visitors};
+use App\Models\{ Files, Images, User, Visitors};
 use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -51,43 +51,69 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class AdminController extends Controller implements ViewInterface, ColumnsInterface
 {
+    /**
+     * @param UserService $userService
+     * @param InformationsService $informationsService
+     * @param PostService $postService
+     * @param SkillsService $skillsService
+     * @param EducationsService $educationsService
+     * @param AdditionalLinksService $additionalLinksService
+     * @param ReadService $readService
+     * @param AuthService $authService
+     */
     public function __construct(
-        protected UserService $userService , protected InformationsService $informationsService ,
+        protected UserService $userService, protected InformationsService $informationsService,
         protected PostService $postService, protected SkillsService $skillsService,
-        protected EducationsService $educationsService,protected AdditionalLinksService $additionalLinksService,
-        protected ReadService $readService , protected AuthService $authService
+        protected EducationsService $educationsService, protected AdditionalLinksService $additionalLinksService,
+        protected ReadService $readService, protected AuthService $authService
 
-    ){}
+    ) {}
 
+    /**
+     * @return Factory|Application|View
+     */
     public function dashboard(): Factory|Application|View
     {
         return view(self::VIEW_ADMIN_REGISTRATION);
     }
 
+    /**
+     * @return Factory|Application|View
+     */
     public function welcome(): Factory|Application|View
     {
-        $userInfo = User::query()->find(auth()->id());
+        $userInfo = null;
 
-        if ($userInfo !== null)
-        $userInfo->load(['educations','informations','skills','posts.additionalLinks','images']);
+        if (!is_null(auth()->id())) {
+            $userInfo = User::query()->find(auth()->id());
+
+            if ($userInfo !== null)
+                $userInfo->load(['educations', 'informations', 'skills', 'posts.additionalLinks', 'images', 'files']);
+
+        }
+
         $ip = $this->createVisitors();
 
-        return view(self::VIEW_WELCOME,compact('userInfo','ip'));
+        return view(self::VIEW_WELCOME, compact('userInfo', 'ip'));
     }
 
-    private function  createVisitors(): Model|Builder|null
+    /**
+     * @return Model|Builder|null
+     */
+    private function createVisitors(): Model|Builder|null
     {
         $visitor_ip = $_SERVER['REMOTE_ADDR'];
         $user_agent = $_SERVER['HTTP_USER_AGENT'];
         $referrer = $_SERVER['HTTP_REFERER'] ?? 'No referrer';
         $timestamp = date("Y-m-d H:i:s");
-
         $visitor = null;
-        if (!is_null(auth()->id())){
-            $visitor =  Visitors::query()->firstOrCreate(
+
+        if (!is_null(auth()->id()) && User::query()->where('id', auth()->id())->exists()) {
+            $visitor = Visitors::query()->firstOrCreate(
                 [self::IP_ADDRESS => $visitor_ip],
                 [
                     self::USER_AGENT => $user_agent,
@@ -100,37 +126,46 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
 
         return $visitor;
     }
+
+    /**
+     * @return Factory|Application|View
+     */
     public function adminDashboard(): Factory|Application|View
     {
-       return $this->readService->adminDashboard();
+        return $this->readService->adminDashboard();
     }
-    private function getDateTimeNow(): string
-    {
-        $armeniaTime = Carbon::now('Asia/Yerevan');
-        $armeniaTime->toDateTimeString();
 
-        return $armeniaTime->format('Y-m-d H:i:s');
-    }
+    /**
+     * @param StoreRegisterRequest $storeRegisterRequest
+     * @return JsonResponse|RedirectResponse
+     */
     public function registration(StoreRegisterRequest $storeRegisterRequest): JsonResponse|RedirectResponse
     {
-        $registerDTO= new RegisterDTO(
-          $storeRegisterRequest->getName(),
-          $storeRegisterRequest->getEmail(),
-          $storeRegisterRequest->getPassword()
+        $registerDTO = new RegisterDTO(
+            $storeRegisterRequest->getName(),
+            $storeRegisterRequest->getEmail(),
+            $storeRegisterRequest->getPassword()
         );
 
-      return $this->authService->registration($registerDTO);
+        return $this->authService->registration($registerDTO);
     }
 
-    public function getLogin(Request $request): Factory|Application|View
+    /**
+     * @return Factory|Application|View
+     */
+    public function getLogin(): Factory|Application|View
     {
         return view(self::VIEW_ADMIN_LOGIN);
     }
 
+    /**
+     * @param LoginRequest $request
+     * @return JsonResponse|RedirectResponse
+     */
     public function login(LoginRequest $request): JsonResponse|RedirectResponse
     {
         $loginDTO = new LoginDTO(
-              $request->getEmail(),
+            $request->getEmail(),
             $request->getPassword()
         );
         $this->authService->login($loginDTO);
@@ -139,7 +174,11 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->route('admin.adminDashboard');
     }
 
-    public function logout(Request $request)
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function logout(Request $request): RedirectResponse
     {
         $user = auth()->user();
 
@@ -149,23 +188,32 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
             $request->session()->invalidate();
             $request->session()->regenerateToken();
         } else {
-
             return redirect()->route(self::VIEW_LOGIN)->with('error', 'User is not authenticated.');
         }
 
         return redirect()->route(self::VIEW_WELCOME)->with('success', 'Logged out successfully.');
     }
 
+    /**
+     * @return Factory|Application|View
+     */
     public function adminForm(): Factory|Application|View
     {
         return $this->readService->adminForm();
     }
 
+    /**
+     * @return Factory|Application|View
+     */
     public function adminTable(): Factory|Application|View
     {
         return $this->readService->adminTable();
     }
 
+    /**
+     * @param UpdateUserRequest $request
+     * @return RedirectResponse
+     */
     public function updateUser(UpdateUserRequest $request): RedirectResponse
     {
         $userDTO = new UserUpdateDTO(
@@ -182,6 +230,10 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
+    /**
+     * @param UpdateAboutMeRequest $request
+     * @return RedirectResponse
+     */
     public function updateAboutMe(UpdateAboutMeRequest $request): RedirectResponse
     {
         $updateAboutMeDTO = new UpdateAboutMeDTO(
@@ -192,6 +244,11 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
 
         return redirect()->back();
     }
+
+    /**
+     * @param CreateAboutMeRequest $request
+     * @return RedirectResponse
+     */
     public function createAboutMe(CreateAboutMeRequest $request): RedirectResponse
     {
         $createAboutMeDTO = new CreateAboutMeDTO(
@@ -203,6 +260,10 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
+    /**
+     * @param CreatePostRequest $request
+     * @return RedirectResponse
+     */
     public function createPost(CreatePostRequest $request): RedirectResponse
     {
         $createPostDTO = new CreatePostDTO(
@@ -215,7 +276,11 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
-    public function updatePost(CreatePostRequest $request):RedirectResponse
+    /**
+     * @param CreatePostRequest $request
+     * @return RedirectResponse
+     */
+    public function updatePost(CreatePostRequest $request): RedirectResponse
     {
         $updatePostDTO = new UpdatePostDTO(
             $request->getImage(),
@@ -230,17 +295,25 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function deletePost(Request $request): RedirectResponse
-   {
+    {
         $deletePostDTO = new DeletePostDTO(
             $request->path,
             $request->id,
         );
-       $this->postService->deletePost($deletePostDTO);
+        $this->postService->deletePost($deletePostDTO);
 
         return redirect()->back();
-   }
+    }
 
+    /**
+     * @param CreateSkillRequest $request
+     * @return RedirectResponse
+     */
     public function createSkills(CreateSkillRequest $request): RedirectResponse
     {
         $createSkillDTO = new CreateSkillDTO(
@@ -252,6 +325,10 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
+    /**
+     * @param CreateSkillRequest $request
+     * @return RedirectResponse
+     */
     public function updateSkills(CreateSkillRequest $request): RedirectResponse
     {
         $updateSkillDTO = new UpdateSkillDTO(
@@ -263,29 +340,39 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function deleteSkills(Request $request): RedirectResponse
     {
         $deleteSkillDTO = new DeleteSkillsDTO(
             $request->id
         );
-
         $this->skillsService->deleteSkills($deleteSkillDTO);
 
         return redirect()->back();
     }
 
+    /**
+     * @param CreateEducationRequest $request
+     * @return RedirectResponse
+     */
     public function createEducation(CreateEducationRequest $request): RedirectResponse
     {
         $createEducationDTO = new CreateEducationDTO(
             $request->getEducation(),
             $request->getId()
         );
-
         $this->educationsService->createEducation($createEducationDTO);
 
         return redirect()->back();
     }
 
+    /**
+     * @param UpdateEducationRequest $request
+     * @return RedirectResponse
+     */
     public function updateEducation(UpdateEducationRequest $request): RedirectResponse
     {
         $updateEducationDTO = new UpdateEducationDTO(
@@ -297,6 +384,10 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function deleteEducation(Request $request): RedirectResponse
     {
         $deleteEducationDTO = new DeleteEducationDTO(
@@ -307,6 +398,10 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
+    /**
+     * @param CreateLinkRequest $request
+     * @return RedirectResponse
+     */
     public function createLinks(CreateLinkRequest $request): RedirectResponse
     {
         $createLinkDTO = new CreateLinkDTO(
@@ -319,6 +414,10 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
+    /**
+     * @param CreateLinkRequest $request
+     * @return RedirectResponse
+     */
     public function updateLinks(CreateLinkRequest $request): RedirectResponse
     {
         $updateLinkDTO = new UpdateLinkDTO(
@@ -331,10 +430,13 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
-
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function deleteLinks(Request $request): RedirectResponse
     {
-        $deleteLinkDTO=new DeleteLinkDTO(
+        $deleteLinkDTO = new DeleteLinkDTO(
             $request->id,
         );
         $this->additionalLinksService->deleteLinks($deleteLinkDTO);
@@ -342,24 +444,26 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
-    public  function createImage(CreateImageRequest $request): RedirectResponse
+    public function createImage(CreateImageRequest $request): RedirectResponse
     {
-
         $imageName = $request->file('image')->getClientOriginalName();
         $imagePath = $request->file('image')->store('public/assets/images');
-
-
         Images::query()->create([
             self::IMAGE_NAME => $imageName,
-            self::IMAGE_PATH =>  basename($imagePath),
-            self::IMAGE_FULL_PATH =>  $imagePath,
-            self::USER_ID=>auth()->id(),
+            self::IMAGE_PATH => basename($imagePath),
+            self::IMAGE_FULL_PATH => $imagePath,
+            self::USER_ID => auth()->id(),
         ]);
 
         return redirect()->back();
     }
 
-    public function updateImage(CreateImageRequest $request):RedirectResponse
+    /**
+     * @param CreateImageRequest $request
+     * @return RedirectResponse
+     */
+
+    public function updateImage(CreateImageRequest $request): RedirectResponse
     {
         $postData = [
             self::IMAGE_NAME => $request->input('image_name')
@@ -388,36 +492,58 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function deleteImage(Request $request): RedirectResponse
     {
-        Images::query()->where('id',$request->id)->delete();
+        Images::query()->where('id', $request->id)->delete();
 
-        if (Storage::exists($request->path) ) {
+        if (Storage::exists($request->path)) {
             Storage::delete($request->path);
         }
 
         return redirect()->back();
     }
-    public function createPDF(Request$request): RedirectResponse
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function createPDF(Request $request): RedirectResponse
     {
         $request->validate([
-            'pdf' => 'required|mimes:pdf|max:2048',
+            'name' => 'required|mimes:pdf|max:2048',
         ]);
-        $file = $request->file('pdf')->getClientOriginalName();
-
-        pdf::query()->create([
-            'pdf' => $file,
+        $file = $request->file('name')->getClientOriginalName();
+        $path =$request->file('name')->store('public/assets/file');
+        Files::query()->create([
+            'name' => $file,
+            'path' => $path,
+            self::USER_ID => auth()->id(),
         ]);
 
         return redirect()->back();
-
     }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function deletePDF(Request $request): RedirectResponse
     {
-
-        pdf::query()->where('id',$request->id)->delete();
+        Files::query()->where('id', $request->id)->delete();
 
         return redirect()->back();
     }
 
+    /**
+     * @param $file
+     * @return BinaryFileResponse
+     */
+    public function downloadPDF($file): BinaryFileResponse
+    {
+        return response()->download(storage_path('app/public/assets/file/'.$file));
+    }
 }
