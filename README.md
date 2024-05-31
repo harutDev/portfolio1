@@ -67,9 +67,4 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Need to do
 
-sarqel Requestner amen posti hamar iranc anunnerov -> anunic heto paradit lini Request bar@` CategoryCreateRequest 
-sarqel amen posti hamar DTO private paramnerov
-sarqel service vor controlleric kanchvi et service@ 
-inchqan zerqov drac barer kam tver kan sarqel const vor heto kanches self::et bar@
-mekel amen servicei hamar interface
 
