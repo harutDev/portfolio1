@@ -2,34 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\DTO\{CreateAboutMeDTO,
-    CreateEducationDTO,
-    CreateLinkDTO,
-    CreatePostDTO,
-    CreateSkillDTO,
-    DeleteEducationDTO,
+use App\DTO\{DeleteEducationDTO,
     DeleteLinkDTO,
     DeletePostDTO,
     DeleteSkillsDTO,
-    LoginDTO,
-    RegisterDTO,
-    UpdateAboutMeDTO,
-    UpdateEducationDTO,
-    UpdateLinkDTO,
-    UpdatePostDTO,
-    UpdateSkillDTO,
-    UserUpdateDTO};
-use App\Http\Requests\{CreateAboutMeRequest,
-    CreateEducationRequest,
-    CreateImageRequest,
-    CreateLinkRequest,
-    CreatePostRequest,
-    CreateSkillRequest,
-    LoginRequest,
-    StoreRegisterRequest,
-    UpdateAboutMeRequest,
-    UpdateEducationRequest,
-    UpdateUserRequest};
+    RegisterDTO,};
+use App\Http\Requests\{StoreRegisterRequest,};
 use App\Http\Services\{AdditionalLinksService,
     AuthService,
     EducationsService,
@@ -41,7 +19,6 @@ use App\Http\Services\{AdditionalLinksService,
 use App\Interface\ColumnsInterface;
 use App\Interface\ViewInterface;
 use App\Models\{ Files, Images, User, Visitors};
-use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
@@ -159,22 +136,6 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
     }
 
     /**
-     * @param LoginRequest $request
-     * @return JsonResponse|RedirectResponse
-     */
-    public function login(LoginRequest $request): JsonResponse|RedirectResponse
-    {
-        $loginDTO = new LoginDTO(
-            $request->getEmail(),
-            $request->getPassword()
-        );
-        $this->authService->login($loginDTO);
-        $request->session()->regenerate();
-
-        return redirect()->route('admin.adminDashboard');
-    }
-
-    /**
      * @param Request $request
      * @return RedirectResponse
      */
@@ -211,91 +172,6 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
     }
 
     /**
-     * @param UpdateUserRequest $request
-     * @return RedirectResponse
-     */
-    public function updateUser(UpdateUserRequest $request): RedirectResponse
-    {
-        $userDTO = new UserUpdateDTO(
-            $request->getId(),
-            $request->getName(),
-            $request->getSurname(),
-            $request->getAddress(),
-            $request->getPhone(),
-            $request->getAge(),
-            $request->input('languages')
-        );
-        $this->userService->updateUser($userDTO);
-
-        return redirect()->back();
-    }
-
-    /**
-     * @param UpdateAboutMeRequest $request
-     * @return RedirectResponse
-     */
-    public function updateAboutMe(UpdateAboutMeRequest $request): RedirectResponse
-    {
-        $updateAboutMeDTO = new UpdateAboutMeDTO(
-            $request->getAboutMe(),
-            $request->getId()
-        );
-        $this->informationsService->updateAboutMe($updateAboutMeDTO);
-
-        return redirect()->back();
-    }
-
-    /**
-     * @param CreateAboutMeRequest $request
-     * @return RedirectResponse
-     */
-    public function createAboutMe(CreateAboutMeRequest $request): RedirectResponse
-    {
-        $createAboutMeDTO = new CreateAboutMeDTO(
-            $request->getAboutMe(),
-            $request->getId()
-        );
-        $this->informationsService->createAboutMe($createAboutMeDTO);
-
-        return redirect()->back();
-    }
-
-    /**
-     * @param CreatePostRequest $request
-     * @return RedirectResponse
-     */
-    public function createPost(CreatePostRequest $request): RedirectResponse
-    {
-        $createPostDTO = new CreatePostDTO(
-            $request->getImage(),
-            $request->getLinks(),
-            $request->getId()
-        );
-        $this->postService->createPost($createPostDTO);
-
-        return redirect()->back();
-    }
-
-    /**
-     * @param CreatePostRequest $request
-     * @return RedirectResponse
-     */
-    public function updatePost(CreatePostRequest $request): RedirectResponse
-    {
-        $updatePostDTO = new UpdatePostDTO(
-            $request->getImage(),
-            $request->getLinks(),
-            $request->getId()
-        );
-
-        if ($request->has('image')) {
-            $this->postService->updatePost($updatePostDTO);
-        }
-
-        return redirect()->back();
-    }
-
-    /**
      * @param Request $request
      * @return RedirectResponse
      */
@@ -306,36 +182,6 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
             $request->id,
         );
         $this->postService->deletePost($deletePostDTO);
-
-        return redirect()->back();
-    }
-
-    /**
-     * @param CreateSkillRequest $request
-     * @return RedirectResponse
-     */
-    public function createSkills(CreateSkillRequest $request): RedirectResponse
-    {
-        $createSkillDTO = new CreateSkillDTO(
-            $request->getName(),
-            $request->getId()
-        );
-        $this->skillsService->createSkills($createSkillDTO);
-
-        return redirect()->back();
-    }
-
-    /**
-     * @param CreateSkillRequest $request
-     * @return RedirectResponse
-     */
-    public function updateSkills(CreateSkillRequest $request): RedirectResponse
-    {
-        $updateSkillDTO = new UpdateSkillDTO(
-            $request->getId(),
-            $request->getName()
-        );
-        $this->skillsService->updateSkills($updateSkillDTO);
 
         return redirect()->back();
     }
@@ -354,35 +200,6 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
-    /**
-     * @param CreateEducationRequest $request
-     * @return RedirectResponse
-     */
-    public function createEducation(CreateEducationRequest $request): RedirectResponse
-    {
-        $createEducationDTO = new CreateEducationDTO(
-            $request->getEducation(),
-            $request->getId()
-        );
-        $this->educationsService->createEducation($createEducationDTO);
-
-        return redirect()->back();
-    }
-
-    /**
-     * @param UpdateEducationRequest $request
-     * @return RedirectResponse
-     */
-    public function updateEducation(UpdateEducationRequest $request): RedirectResponse
-    {
-        $updateEducationDTO = new UpdateEducationDTO(
-            $request->getId(),
-            $request->getName()
-        );
-        $this->educationsService->updateEducation($updateEducationDTO);
-
-        return redirect()->back();
-    }
 
     /**
      * @param Request $request
@@ -394,38 +211,6 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
             $request->id,
         );
         $this->educationsService->deleteEducation($deleteEducationDTO);
-
-        return redirect()->back();
-    }
-
-    /**
-     * @param CreateLinkRequest $request
-     * @return RedirectResponse
-     */
-    public function createLinks(CreateLinkRequest $request): RedirectResponse
-    {
-        $createLinkDTO = new CreateLinkDTO(
-            $request->getName(),
-            $request->getId(),
-            $request->getPostId()
-        );
-        $this->additionalLinksService->createLinks($createLinkDTO);
-
-        return redirect()->back();
-    }
-
-    /**
-     * @param CreateLinkRequest $request
-     * @return RedirectResponse
-     */
-    public function updateLinks(CreateLinkRequest $request): RedirectResponse
-    {
-        $updateLinkDTO = new UpdateLinkDTO(
-            $request->getPostId(),
-            $request->getName(),
-            $request->getId()
-        );
-        $this->additionalLinksService->updateLinks($updateLinkDTO);
 
         return redirect()->back();
     }
@@ -444,54 +229,6 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         return redirect()->back();
     }
 
-    public function createImage(CreateImageRequest $request): RedirectResponse
-    {
-        $imageName = $request->file('image')->getClientOriginalName();
-        $imagePath = $request->file('image')->store('public/assets/images');
-        Images::query()->create([
-            self::IMAGE_NAME => $imageName,
-            self::IMAGE_PATH => basename($imagePath),
-            self::IMAGE_FULL_PATH => $imagePath,
-            self::USER_ID => auth()->id(),
-        ]);
-
-        return redirect()->back();
-    }
-
-    /**
-     * @param CreateImageRequest $request
-     * @return RedirectResponse
-     */
-
-    public function updateImage(CreateImageRequest $request): RedirectResponse
-    {
-        $postData = [
-            self::IMAGE_NAME => $request->input('image_name')
-        ];
-
-        if ($request->hasFile('image')) {
-            $oldPostPath = Images::query()->where('id', $request->input('id'))->first();
-            $param = false;
-
-            if (Storage::exists($oldPostPath->image_full_path)) {
-                Storage::delete($oldPostPath->image_full_path);
-                $param = true;
-            }
-
-            if ($param) {
-                $imageName = $request->file('image')->getClientOriginalName();
-                $imagePath = $request->file('image')->store('public/assets/images');
-                $postData['image_name'] = $imageName;
-                $postData['image_path'] = basename($imagePath);
-                $postData['image_full_path'] = $imagePath;
-            }
-        }
-
-        Images::query()->where('id', $request->input('id'))->update($postData);
-
-        return redirect()->back();
-    }
-
     /**
      * @param Request $request
      * @return RedirectResponse
@@ -503,26 +240,6 @@ class AdminController extends Controller implements ViewInterface, ColumnsInterf
         if (Storage::exists($request->path)) {
             Storage::delete($request->path);
         }
-
-        return redirect()->back();
-    }
-
-    /**
-     * @param Request $request
-     * @return RedirectResponse
-     */
-    public function createPDF(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => 'required|mimes:pdf|max:2048',
-        ]);
-        $file = $request->file('name')->getClientOriginalName();
-        $path =$request->file('name')->store('public/assets/file');
-        Files::query()->create([
-            'name' => $file,
-            'path' => $path,
-            self::USER_ID => auth()->id(),
-        ]);
 
         return redirect()->back();
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,19 +39,21 @@ Route::group(['prefix' => 'admins', 'as' => 'admin.'], function () {
     Route::delete('/delete-pdf', [AdminController::class, 'deletePDF'])->name('deletePDF');
 
     //post
-    Route::post('/login', [AdminController::class, 'login'])->name('submit_login');
-    Route::post('/update-user', [AdminController::class, 'updateUser'])->name('updateUser');
-    Route::post('/update-about_me', [AdminController::class, 'updateAboutMe'])->name('updateAboutMe');
-    Route::post('/create-about_me', [AdminController::class, 'createAboutMe'])->name('createAboutMe');
-    Route::post('/create-post', [AdminController::class, 'createPost'])->name('createPost')->middleware('auth');
-    Route::post('/update-post', [AdminController::class, 'updatePost'])->name('updatePost');
-    Route::post('/create-skills', [AdminController::class, 'createSkills'])->name('createSkills');
-    Route::post('/update-skills', [AdminController::class, 'updateSkills'])->name('updateSkills');
-    Route::post('/create-education', [AdminController::class, 'createEducation'])->name('createEducation');
-    Route::post('/update-education', [AdminController::class, 'updateEducation'])->name('updateEducation');
-    Route::post('/create-links', [AdminController::class, 'createLinks'])->name('createLinks');
-    Route::post('/update-links', [AdminController::class, 'updateLinks'])->name('updateLinks');
-    Route::post('/create-image', [AdminController::class, 'createImage'])->name('createImage');
-    Route::post('/update-image', [AdminController::class, 'updateImage'])->name('updateImage');
-    Route::post('/create-pdf', [AdminController::class, 'createPDF'])->name('createPDF');
+    Route::post('/login', [ServiceController::class, 'login'])->name('submit_login');
+    Route::post('/update-user', [ServiceController::class, 'updateUser'])->name('updateUser');
+    Route::post('/update-about_me', [ServiceController::class, 'updateAboutMe'])->name('updateAboutMe');
+    Route::post('/create-about_me', [ServiceController::class, 'createAboutMe'])->name('createAboutMe');
+    Route::post('/create-post', [ServiceController::class, 'createPost'])->name('createPost')->middleware('auth');
+    Route::post('/update-post', [ServiceController::class, 'updatePost'])->name('updatePost');
+    Route::post('/create-skills', [ServiceController::class, 'createSkills'])->name('createSkills');
+    Route::post('/update-skills', [ServiceController::class, 'updateSkills'])->name('updateSkills');
+    Route::post('/create-education', [ServiceController::class, 'createEducation'])->name('createEducation');
+    Route::post('/update-education', [ServiceController::class, 'updateEducation'])->name('updateEducation');
+    Route::post('/create-links', [ServiceController::class, 'createLinks'])->name('createLinks');
+    Route::post('/update-links', [ServiceController::class, 'updateLinks'])->name('updateLinks');
+    Route::post('/create-image', [ServiceController::class, 'createImage'])->name('createImage');
+    Route::post('/update-image', [ServiceController::class, 'updateImage'])->name('updateImage');
+    Route::post('/create-pdf', [ServiceController::class, 'createPDF'])->name('createPDF');
 });
+
+// ServiceController -> 40 -> 55

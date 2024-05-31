@@ -129,9 +129,12 @@
             </div>
 
             <!--/.ROW-->
-            <div style="display: flex; overflow-x: scroll; width: 100%;">
+            <br>
+            <br>
+            <h1 style="text-align: center">Create and Update education</h1>
+            <div style="display: flex;  width: 1300px; border: 2px solid black">
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="panel panel-default">
+                <div class="panel panel-default " style="width: 1200px">
                     <div class="panel-heading">
                         <h1> Create Education section </h1>
                         My Education
@@ -153,51 +156,55 @@
                             </div>
                             <button type="submit" class="btn btn-danger">Save </button>
                         </form>
+                           <div style="display: flex">
+                            @foreach($userInfo->educations as $education)
+
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h1> Update education section </h1>
+                                            My education #{{$education->id}}
+                                            <button ><a href="{{route('admin.deleteEducation',[$education->id])}}"  class="menu-top-active">X</a></button>
+
+                                        </div>
+                                        <div class="panel-body">
+
+                                            <form action="{{route("admin.updateEducation")}}" method="post" role="form" >
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{$education->id}}">
+                                                <div class="form-group has-success">
+                                                    <label class="control-label" for="success">My education</label>
+                                                    <input type="text" class="form-control" id="success" name="name" value="{{$education->name}}" />
+                                                    @error('name')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <button type="submit" class="btn btn-danger">Update </button>
+                                            </form>
 
 
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                           </div>
                     </div>
                 </div>
             </div>
 
-            @foreach($userInfo->educations as $education)
 
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h1> Update education section </h1>
-                            My education #{{$education->id}}
-                            <button ><a href="{{route('admin.deleteEducation',[$education->id])}}"  class="menu-top-active">X</a></button>
-
-                        </div>
-                        <div class="panel-body">
-
-                            <form action="{{route("admin.updateEducation")}}" method="post" role="form" >
-                                @csrf
-                                <input type="hidden" name="id" value="{{$education->id}}">
-                                <div class="form-group has-success">
-                                    <label class="control-label" for="success">My education</label>
-                                    <input type="text" class="form-control" id="success" name="name" value="{{$education->name}}" />
-                                    @error('name')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <button type="submit" class="btn btn-danger">Update </button>
-                            </form>
-
-
-                        </div>
-                    </div>
-                </div>
-            @endforeach
  </div>
-            <div style="display: flex; overflow-x: auto; width: 100%;">
+            <br>
+            <br>
+             <h1 style="text-align: center">Create and Update skills</h1>
+            <div style="display: flex;  width:1300px; flex-direction: column; border: 2px solid black">
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="panel panel-default">
+                <div class="panel panel-default" style="width: 1200px">
                     <div class="panel-heading">
                         <h1> Create skills section </h1>
                         My Skills
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" >
                         @if (session('success'))
                             <div>
                                 {{ session('success') }}
@@ -215,40 +222,45 @@
                             <button type="submit" class="btn btn-danger">Save </button>
                         </form>
 
-
+                            <div style="display: flex">
+                                @foreach($userInfo->skills as $skill)
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h1> Update skills section </h1>
+                                                My Skills #{{$skill->id}}
+                                                <button ><a href="{{route('admin.deleteSkills',[$skill->id])}}"  class="menu-top-active">X</a></button>
+                                            </div>
+                                            <div class="panel-body">
+                                                <form action="{{route("admin.updateSkills")}}" method="post" role="form" >
+                                                    @csrf
+                                                    <input type="hidden" name="id" value="{{$skill->id}}">
+                                                    <div class="form-group has-success">
+                                                        <label class="control-label" for="success">My skills</label>
+                                                        <input type="text" class="form-control" id="success" name="name" value="{{$skill->name}}" />
+                                                        @error('name')
+                                                        <div>{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                    <button type="submit" class="btn btn-danger">Update </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                     </div>
                 </div>
             </div>
 
-            @foreach($userInfo->skills as $skill)
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h1> Update skills section </h1>
-                            My Skills #{{$skill->id}}
-                            <button ><a href="{{route('admin.deleteSkills',[$skill->id])}}"  class="menu-top-active">X</a></button>
-                        </div>
-                        <div class="panel-body">
-                            <form action="{{route("admin.updateSkills")}}" method="post" role="form" >
-                                @csrf
-                                <input type="hidden" name="id" value="{{$skill->id}}">
-                                <div class="form-group has-success">
-                                    <label class="control-label" for="success">My skills</label>
-                                    <input type="text" class="form-control" id="success" name="name" value="{{$skill->name}}" />
-                                    @error('name')
-                                    <div>{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <button type="submit" class="btn btn-danger">Update </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
         </div>
-            <div style="display: flex; overflow-x: auto; width: 100%;">
+            <br>
+            <br>
+            <h1 style="text-align: center">Create and Update Posts</h1>
+            <div   style="display: flex; width:1300px; flex-direction: column ; border: 2px solid black">
+
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <div class="panel panel-default">
+                <div class="panel panel-default" style="width:1200px;">
                     <div class="panel-heading">
                         <h1> Create post section </h1>
                         Create POSTS
@@ -275,67 +287,70 @@
                             <button type="submit" class="btn btn-danger">Save </button>
                         </form>
 
+                        <div style="display: flex">
+                            @foreach($userInfo->posts as $post)
 
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h1> Update post section </h1>
+                                            Update POSTS #{{ $post->id }}
+                                            <form action="{{route('admin.deletePost')}}" method="post" role="form">
+                                                @csrf
+                                                @method('delete')
+                                                <input type="hidden" name="id" value="{{$post->id}}">
+                                                <input type="hidden" name="path" value="{{$post->image_full_path}}">
+                                                <button type="submit" class="btn btn-danger">
+                                                    delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="panel-body">
+
+                                            <form action="{{route('admin.updatePost')}}" method="post" role="form" enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{$post->id}}">
+
+                                                <img style="width: 100px; height: 100px;" src="{{ asset('storage/assets/images/'.$post->image_pate) }}" alt={{ $post->image_name}}>
+                                                <div class="form-group has-success">
+                                                    <label class="control-label" for="success">Image</label>
+                                                    <input type="file" class="form-control" id="success" name="image"/>
+                                                    @error('image')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+
+                                                </div>
+
+                                                <div class="form-group has-error">
+                                                    <label class="control-label" for="error">LInks</label>
+                                                    <input type="text" class="form-control" id="error" name="links" value="{{$post->links}}" />
+                                                    @error('links')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                                <button type="submit" class="btn btn-danger">Update</button>
+                                            </form>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 
             </div>
 
-            @foreach($userInfo->posts as $post)
-
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h1> Update post section </h1>
-                            Update POSTS #{{ $post->id }}
-                            <form action="{{route('admin.deletePost')}}" method="post" role="form">
-                                @csrf
-                                @method('delete')
-                                    <input type="hidden" name="id" value="{{$post->id}}">
-                                    <input type="hidden" name="path" value="{{$post->image_full_path}}">
-                                <button type="submit" class="btn btn-danger">
-                                    delete
-                                </button>
-                            </form>
-                        </div>
-                        <div class="panel-body">
-
-                            <form action="{{route('admin.updatePost')}}" method="post" role="form" enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="id" value="{{$post->id}}">
-
-                                <img style="width: 100px; height: 100px;" src="{{ asset('storage/assets/images/'.$post->image_pate) }}" alt={{ $post->image_name}}>
-                                <div class="form-group has-success">
-                                    <label class="control-label" for="success">Image</label>
-                                    <input type="file" class="form-control" id="success" name="image"/>
-                                    @error('image')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-
-                                </div>
-
-                                <div class="form-group has-error">
-                                    <label class="control-label" for="error">LInks</label>
-                                    <input type="text" class="form-control" id="error" name="links" value="{{$post->links}}" />
-                                    @error('links')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <button type="submit" class="btn btn-danger">Update</button>
-                            </form>
-
-
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-
 
             </div>
+            <br>
+            <br>
+            <br>
+            <h1 style="text-align: center">Create and update links </h1>
+         <div style="display:flex;flex-direction: column">
+                <div class="panel panel-default " style="border: 2px solid black"  >
 
-
-            <div class="col-md-6 col-sm-6 col-xs-12" style="display: flex !important; " >
-                <div class="panel panel-default">
                     <div class="panel-heading">
                         <h1> Create Additional links </h1>
 
@@ -364,7 +379,7 @@
 
                     </div>
                     @foreach($links as $link)
-                        <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="col-md-6 col-sm-6 col-xs-12" style="display: flex">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h1> Update Additional links #{{ $link->id }} </h1>
@@ -401,10 +416,11 @@
                         </div>
                     @endforeach
                     </div>
-                </div>
-
-
-                <div class="col-md-6 col-sm-6 col-xs-12">
+            <br>
+             <br>
+             <br>
+                 <h1 style="text-align: center">Create and Update Images</h1>
+                <div class="col-md-6 col-sm-6 col-xs-12" style="width: 1300px; border: 2px solid black" >
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h1> Create Image section </h1>
@@ -422,50 +438,56 @@
                                 </div>
                                 <button type="submit" class="btn btn-danger">Save </button>
                             </form>
-                        </div>
-                        @foreach($userInfo->images as $images)
-                            <div class="col-md-6 col-sm-6 col-xs-12" style="width: 300px">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h1> Update image section </h1>
-                                        Update Image #{{ $images->id }}
-                                        <form action="{{route('admin.deleteImage')}}" method="post" role="form">
-                                            @csrf
-                                            @method('delete')
-                                            <input type="hidden" name="id" value="{{$images->id}}">
-                                            <input type="hidden" name="path" value="{{$images->image_full_path}}">
-                                            <button type="submit" class="btn btn-danger">
-                                                delete
-                                            </button>
-                                        </form>
-                                    </div>
-                                    <div class="panel-body">
+                    <div style="display: flex">
+                            @foreach($userInfo->images as $images)
+                                <div class="col-md-6 col-sm-6 col-xs-12" style="width: 300px">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h1> Update image section </h1>
+                                            Update Image #{{ $images->id }}
+                                            <form action="{{route('admin.deleteImage')}}" method="post" role="form">
+                                                @csrf
+                                                @method('delete')
+                                                <input type="hidden" name="id" value="{{$images->id}}">
+                                                <input type="hidden" name="path" value="{{$images->image_full_path}}">
+                                                <button type="submit" class="btn btn-danger">
+                                                    delete
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="panel-body">
 
-                                        <form action="{{route('admin.updateImage')}}" method="post" role="form" enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{$images->id}}">
+                                            <form action="{{route('admin.updateImage')}}" method="post" role="form" enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{$images->id}}">
 
-                                            <img style="width: 100px; height: 100px;" src="{{ asset('storage/assets/images/'.$images->image_path) }}" alt={{ $images->image_name}}>
-                                            <div class="form-group has-success">
-                                                <label class="control-label" for="success">Image</label>
-                                                <input type="file" class="form-control" id="success" name="image"/>
-                                                @error('image')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
+                                                <img style="width: 100px; height: 100px;" src="{{ asset('storage/assets/images/'.$images->image_path) }}" alt={{ $images->image_name}}>
+                                                <div class="form-group has-success">
+                                                    <label class="control-label" for="success">Image</label>
+                                                    <input type="file" class="form-control" id="success" name="image"/>
+                                                    @error('image')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
 
 
-                                            <button type="submit" class="btn btn-danger">Update</button>
-                                        </form>
+                                                <button type="submit" class="btn btn-danger">Update</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                    </div>
+                        </div>
+
                     </div>
                 </div>
-
-                            <div class="col-md-6 col-sm-6 col-xs-12" style="width: 500px ; display: flex">
-                                <div class="panel panel-default">
+          </div>
+            <br>
+            <br>
+                 <h1 style="text-align: center">Create and Delete PDF</h1>
+                            <div class="col-md-6 col-sm-6 col-xs-12" style="width: 1500px ; display: flex ; flex-direction: column">
+                                <div class="panel panel-default" style="width: 1300px">
                                     <div class="panel-heading">
                                         <h1> Create PDF section </h1>
                                         Create PDF
@@ -481,24 +503,24 @@
 
                                             <button type="submit" class="btn btn-danger">Save </button>
                                         </form>
-
-
+              <br>
+                                        @foreach( $file as $files)
+                                            <div class="col-md-6 col-sm-6 col-xs-12" style="width: 500px">
+                                                <p>{{ $files->name }}</p>
+                                                <form action="{{ route('admin.deletePDF') }}" method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <input type="hidden" name="id" value="{{ $files->id }}">
+                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                </form>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
 
 
 
-                        @foreach( $file as $files)
-                            <div class="col-md-6 col-sm-6 col-xs-12" style="width: 500px">
-                                <p>{{ $files->name }}</p>
-                                <form action="{{ route('admin.deletePDF') }}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <input type="hidden" name="id" value="{{ $files->id }}">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
-                            </div>
-                        @endforeach
+
                         </div>
 
 
