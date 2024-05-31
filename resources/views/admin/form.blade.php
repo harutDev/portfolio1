@@ -99,6 +99,7 @@
                             About Me
                         </div>
                         <div class="panel-body">
+
                             @if($userInfo->informations !== null && count($userInfo->informations) > 0)
                                 <form action="{{route('admin.updateAboutMe')}}" method="post" role="form">
                                     @csrf
@@ -115,6 +116,7 @@
                                 <form action="{{route('admin.createAboutMe')}}" method="post" role="form">
                                     @csrf
                                     <div class="form-group">
+                                        <input type="hidden" name="id" value="{{$userInfo->id}}">
                                         <textarea name="about_me"></textarea>
                                         @error('about_me')
                                         <div>{{ $message }}</div>
@@ -156,7 +158,7 @@
                             </div>
                             <button type="submit" class="btn btn-danger">Save </button>
                         </form>
-                           <div style="display: flex">
+                           <div style="display: flex ; flex-wrap: wrap">
                             @foreach($userInfo->educations as $education)
 
                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -222,7 +224,7 @@
                             <button type="submit" class="btn btn-danger">Save </button>
                         </form>
 
-                            <div style="display: flex">
+                            <div style="display: flex ; flex-wrap: wrap">
                                 @foreach($userInfo->skills as $skill)
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <div class="panel panel-default">
@@ -257,7 +259,7 @@
             <br>
             <br>
             <h1 style="text-align: center">Create and Update Posts</h1>
-            <div   style="display: flex; width:1300px; flex-direction: column ; border: 2px solid black">
+            <div   style="display: flex;  ; width:1300px; flex-direction: column ; border: 2px solid black">
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="panel panel-default" style="width:1200px;">
@@ -287,7 +289,7 @@
                             <button type="submit" class="btn btn-danger">Save </button>
                         </form>
 
-                        <div style="display: flex">
+                        <div style="display: flex ; flex-wrap: wrap">
                             @foreach($userInfo->posts as $post)
 
                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -438,9 +440,9 @@
                                 </div>
                                 <button type="submit" class="btn btn-danger">Save </button>
                             </form>
-                    <div style="display: flex">
+                    <div style="display: flex ; flex-wrap: wrap">
                             @foreach($userInfo->images as $images)
-                                <div class="col-md-6 col-sm-6 col-xs-12" style="width: 300px">
+                                <div class="col-md-6 col-sm-6 col-xs-12" >
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h1> Update image section </h1>

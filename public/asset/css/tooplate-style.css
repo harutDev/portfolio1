@@ -59,6 +59,7 @@ footer a:link, footer a:visited {
 .tm-nav {
   margin: 30px;
   text-transform: uppercase;
+    width: 200px;
 }
 
 .tm-nav-links {
@@ -69,7 +70,7 @@ footer a:link, footer a:visited {
 .tm-nav-link:visited {
   color: black;
   background-color: white;
-  padding: 10px 40px;
+  /*padding: 10px 40px;*/
   display: block;
   margin-bottom: 6px;
   text-align: center;
@@ -197,6 +198,7 @@ footer {
 }
 
 .slick-dots li {
+
   background-color: white;
   width: 40px;
   height: 40px;
@@ -207,6 +209,7 @@ footer {
 .slick-dots li:hover,
 .slick-dots li.slick-active {
   background-color: #a20015;
+
 }
 
 .slick-dots li:hover a:not([href]):not([tabindex]),
@@ -218,6 +221,7 @@ footer {
   color: black;
   display: block;
   margin-top: 5px;
+    font-size: 100%;
 }
 
 /* Image Hover effect */
@@ -605,6 +609,7 @@ figure.effect-goliath:hover p {
   .tm-nav {
     align-self: flex-end;
     margin-right: 40px;
+
   }
 
   .tm-section {

@@ -107,7 +107,7 @@ http://www.tooplate.com/view/2109-the-card
     <div class="tm-top-container">
         <!-- Menu -->
         <nav id="tmNav" class="tm-nav">
-            <a class="tm-navbar-menu" href="#">Menu</a>
+            <a style="width: 150px" class="tm-navbar-menu" href="#">Menu</a>
             <ul class="tm-nav-links">
                 <li class="tm-nav-item active">
                     <a href="#" data-linkid="0" data-align="right" class="tm-nav-link">Intro</a>
@@ -160,7 +160,7 @@ http://www.tooplate.com/view/2109-the-card
                     @php
                         $param = explode('/',$item->path);
                     @endphp
-                    <p>PDF: <a href="{{route("download-pdf",['file' => $param[3] ])}}">{{ $item->name }}</a></p>
+                    <p class="mb-0 tm-site-subtitle">PDF: <a href="{{route("download-pdf",['file' => $param[3] ])}}">{{ $item->name }}</a></p>
                 @endforeach
                 @if(session('message'))
                     <div class="{{session('message') === 'Mail sent' ? 'alert alert-success' : 'alert alert-danger'}}">
@@ -179,7 +179,7 @@ http://www.tooplate.com/view/2109-the-card
                 <div class="tm-content">
                     <!-- Section 0 Introduction -->
                     <section class="tm-section tm-section-0">
-                        <h2 class="tm-section-title mb-3 font-weight-bold" style="color: black">
+                        <h2 class="tm-section-title mb-3 font-weight-bold" style="color: green">
                             My Projects
                         </h2>
                         <div class="tm-textbox tm-bg-dark">
@@ -198,7 +198,7 @@ http://www.tooplate.com/view/2109-the-card
                                     @endif
                         </div>
 
-                        <a href="#" id="tm_about_link" data-linkid="1" class="tm-link">Next</a>
+                        <a href="#" id="tm_about_link" data-linkid="1" class="tm-link" style="width: 150px">Next</a>
                     </section>
 
                     <!-- Section 1 About Me -->

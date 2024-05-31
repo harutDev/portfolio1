@@ -4,11 +4,9 @@ namespace App\Http\Services;
 
 use App\DTO\CreateAboutMeDTO;
 use App\DTO\UpdateAboutMeDTO;
-use App\DTO\UserUpdateDTO;
 use App\Interface\ColumnsInterface;
 use App\Interface\ViewInterface;
 use App\Models\Informations;
-use App\Models\User;
 
 class InformationsService implements ViewInterface, ColumnsInterface
 {
@@ -23,6 +21,7 @@ class InformationsService implements ViewInterface, ColumnsInterface
         $informations = new Informations();
         $informations->about_me = $createAboutMeDTO->aboutMe;
         $informations->id = $createAboutMeDTO->id;
+        $informations->user_id = auth()->id();
         $informations->save();
     }
 }

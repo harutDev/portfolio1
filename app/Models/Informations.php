@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Informations extends Model
 {
+    public mixed $id;
     protected $fillable = [
         'about_me',
         'user_id'
