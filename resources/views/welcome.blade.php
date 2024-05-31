@@ -179,7 +179,7 @@ http://www.tooplate.com/view/2109-the-card
                 <div class="tm-content">
                     <!-- Section 0 Introduction -->
                     <section class="tm-section tm-section-0">
-                        <h2 class="tm-section-title mb-3 font-weight-bold" style="color: green">
+                        <h2 class="tm-section-title mb-3 font-weight-bold" style="color: white">
                             My Projects
                         </h2>
                         <div class="tm-textbox tm-bg-dark">

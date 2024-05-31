@@ -75,7 +75,7 @@
                         @endforeach
                         @else
                             <div class="item active">
-                                <img src="{{ asset('default-image.jpg') }}" alt="Default Image" />
+                                <img src="{{ asset('asset/img/photo-02.jpg') }}" alt="" />
                             </div>
                         @endif
                     </div>
@@ -88,7 +88,7 @@
                         @endforeach
                         @else
                             <div class="item active">
-                                <img src="{{ asset('default-image.jpg') }}" alt="Default Image" />
+                                <img src="{{ asset("asset/img/photo-01.jpg") }}" alt="" />
                             </div>
                         @endif
                     </ol>
@@ -139,7 +139,7 @@
 
         <div class="row">
 
-            <div class="col-md-8 col-sm-8 col-xs-12">
+            <div class="col-md-8 col-sm-8 col-xs-12" style="overflow: scroll">
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         Responsive Table Example

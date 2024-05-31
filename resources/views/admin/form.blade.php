@@ -103,7 +103,7 @@
                             @if($userInfo->informations !== null && count($userInfo->informations) > 0)
                                 <form action="{{route('admin.updateAboutMe')}}" method="post" role="form">
                                     @csrf
-                                    <input type="hidden" name="id" value="{{$userInfo->informations[0]->id}}">
+                                    <input type="hidden" name="id" value="{{$userInfo->informations[0]['id']}}">
                                     <div class="form-group">
                                         <textarea name="about_me" value="{{$userInfo->informations[0]->about_me}}">{{$userInfo->informations[0]->about_me}}</textarea>
                                         @error('about_me')
@@ -134,7 +134,7 @@
             <br>
             <br>
             <h1 style="text-align: center">Create and Update education</h1>
-            <div style="display: flex;  width: 1300px; border: 2px solid black">
+            <div style="display: flex;  width: 1300px">
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="panel panel-default " style="width: 1200px">
                     <div class="panel-heading">
@@ -158,6 +158,7 @@
                             </div>
                             <button type="submit" class="btn btn-danger">Save </button>
                         </form>
+                            <br>
                            <div style="display: flex ; flex-wrap: wrap">
                             @foreach($userInfo->educations as $education)
 
@@ -199,7 +200,7 @@
             <br>
             <br>
              <h1 style="text-align: center">Create and Update skills</h1>
-            <div style="display: flex;  width:1300px; flex-direction: column; border: 2px solid black">
+            <div style="display: flex;  width:1300px; flex-direction: column">
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="panel panel-default" style="width: 1200px">
                     <div class="panel-heading">
@@ -223,7 +224,7 @@
                             </div>
                             <button type="submit" class="btn btn-danger">Save </button>
                         </form>
-
+                   <br>
                             <div style="display: flex ; flex-wrap: wrap">
                                 @foreach($userInfo->skills as $skill)
                                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -259,7 +260,7 @@
             <br>
             <br>
             <h1 style="text-align: center">Create and Update Posts</h1>
-            <div   style="display: flex;  ; width:1300px; flex-direction: column ; border: 2px solid black">
+            <div   style="display: flex;  ; width:1300px; flex-direction: column">
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="panel panel-default" style="width:1200px;">
@@ -288,7 +289,7 @@
                             </div>
                             <button type="submit" class="btn btn-danger">Save </button>
                         </form>
-
+                <br>
                         <div style="display: flex ; flex-wrap: wrap">
                             @foreach($userInfo->posts as $post)
 
@@ -351,7 +352,7 @@
             <br>
             <h1 style="text-align: center">Create and update links </h1>
          <div style="display:flex;flex-direction: column">
-                <div class="panel panel-default " style="border: 2px solid black"  >
+                <div class="panel panel-default "   >
 
                     <div class="panel-heading">
                         <h1> Create Additional links </h1>
@@ -377,7 +378,7 @@
                             </div>
                             <button type="submit" class="btn btn-danger">Save </button>
                         </form>
-
+     <br>
 
                     </div>
                     @foreach($links as $link)
@@ -422,7 +423,7 @@
              <br>
              <br>
                  <h1 style="text-align: center">Create and Update Images</h1>
-                <div class="col-md-6 col-sm-6 col-xs-12" style="width: 1300px; border: 2px solid black" >
+                <div class="col-md-6 col-sm-6 col-xs-12" style="width: 1300px;" >
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h1> Create Image section </h1>
@@ -440,6 +441,7 @@
                                 </div>
                                 <button type="submit" class="btn btn-danger">Save </button>
                             </form>
+                            <br>
                     <div style="display: flex ; flex-wrap: wrap">
                             @foreach($userInfo->images as $images)
                                 <div class="col-md-6 col-sm-6 col-xs-12" >
