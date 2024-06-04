@@ -263,7 +263,8 @@ http://www.tooplate.com/view/2109-the-card
                     <section class="tm-section tm-section-3 tm-section-left">
                         <form action="{{route("send")}}" class="tm-contact-form" method="post">
                             @csrf
-                            <input type="hidden" name="visitor_id" value="{{$ip}}">
+
+                            <input type="hidden" name="visitor_id" value="{{$ip['id']}}">
                             <div class="form-group mb-4">
                                 <input
                                     type="text"
