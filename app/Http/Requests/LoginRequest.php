@@ -40,7 +40,7 @@ class LoginRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             if ($this->email && $this->password) {
-                $user = User::where('email', $this->email)->first();
+                $user = User::query()->where('email', $this->email)->first();
 
                 if (!$user || !Hash::check($this->password, $user->password)) {
                     $validator->errors()->add('email', 'The provided credentials do not match our records.');

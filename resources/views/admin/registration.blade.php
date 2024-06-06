@@ -43,12 +43,12 @@
     @csrf
     <h2>Registration Form</h2>
     <label for="username">Username:</label>
-    <input type="text" id="username" name="name" >
+    <input type="text" id="username" name="name" value="{{ old('name') }}">
     @error('name')
     <div style="color: red">{{ $message }}</div>
     @enderror
     <label for="email">Email:</label>
-    <input type="email" id="email" name="email" >
+    <input type="email" id="email" name="email"  value="{{ old('email') }}">
     @error('email')
     <div style="color: red">{{ $message }}</div>
     @enderror

@@ -18,7 +18,7 @@ class PostService implements ViewInterface, ColumnsInterface
       $imageName = $createPostDTO->image->getClientOriginalName();
       $imagePath = $createPostDTO->image->store('public/assets/images');
 
-      Post::query()->create([
+      Post::orderBy('id', 'DESC')->query()->create([
           self::IMAGE_NAME => $imageName,
           self::IMAGE_PATE => basename($imagePath),
           self::LINKS => $createPostDTO->links,

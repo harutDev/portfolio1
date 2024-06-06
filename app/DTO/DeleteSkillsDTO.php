@@ -4,11 +4,5 @@ namespace App\DTO;
 
 class DeleteSkillsDTO
 {
-
-
-    public function __construct(public $id)
-    {
-
-    }
-
+    public function __construct(public $id){}
 }

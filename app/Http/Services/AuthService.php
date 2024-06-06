@@ -8,6 +8,8 @@ use App\Interface\ColumnsInterface;
 use App\Interface\ViewInterface;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class AuthService implements ViewInterface, ColumnsInterface
@@ -15,12 +17,12 @@ class AuthService implements ViewInterface, ColumnsInterface
     public function login(LoginDTO $loginDTO): void
     {
 
-        $user = User::where('email', $loginDTO->email)->first();
+        $user = User::query()->where('email', $loginDTO->email)->first();
         Auth::login($user);
 
 
     }
-    public function registration(RegisterDTO $registerDTO): \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+    public function registration(RegisterDTO $registerDTO): JsonResponse|RedirectResponse
     {
         $user = new User([
             self::NAME => $registerDTO->name,
@@ -36,7 +38,7 @@ class AuthService implements ViewInterface, ColumnsInterface
             return redirect()->route(self::VIEW_LOGIN);
         }
         else {
-            return response()->json(['error' => 'Provide proper details']);
+            return response()->json(['error' => 'registration failed']);
         }
     }
 }

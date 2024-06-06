@@ -11,11 +11,15 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function send(Request $request): RedirectResponse
     {
         $message = 'Mail not sent';
 
-        $saveNotice = Notification::query()->create([
+        $saveNotice = $request->visitor_id !== null ?? Notification::query()->create([
             'name' => $request->contact_name,
             'message' => $request->contact_message,
             'email' => $request->contact_email,

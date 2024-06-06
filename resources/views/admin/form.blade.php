@@ -26,7 +26,7 @@
                                 <input type="hidden" name="id" value="{{$userInfo->id}}">
                                 <div class="form-group">
                                     <label>Name</label>
-                                    <input class="form-control" type="text" name="name" value="{{$userInfo->name}}"/>
+                                    <input class="form-control" type="text" name="name" value="{{ old('name', $userInfo->name) }}" />
                                     @error('name')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -34,7 +34,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Surname</label>
-                                    <input class="form-control" type="text" name="surname" value="{{$userInfo->surname}}"/>
+                                    <input class="form-control" type="text" name="surname" value="{{ old('surname', $userInfo->surname) }}" />
                                     @error('surname')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input class="form-control" type="email" name="email" value="{{$userInfo->email}}"/>
+                                    <input class="form-control" type="email" name="email" value="{{old('email',$userInfo->email)}}"/>
                                     @error('email')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -50,21 +50,21 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Enter Age</label>
-                                    <input class="form-control" type="number" name="age" value="{{$userInfo->age}}"/>
+                                    <input class="form-control" type="number" name="age" value="{{old('age',$userInfo->age)}}"/>
                                     @error('age')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Enter Address</label>
-                                    <input class="form-control" type="text" name="address" value="{{$userInfo->address}}"/>
+                                    <input class="form-control" type="text" name="address" value="{{old('address',$userInfo->address)}}"/>
                                     @error('address')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Phone</label>
-                                    <input class="form-control" type="text" name="phone" value="{{$userInfo->phone}}" />
+                                    <input class="form-control" type="text" name="phone" value="{{old('phone',$userInfo->phone)}}" />
                                     @error('phone')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -72,12 +72,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Gander</label>
-                                    <input disabled class="form-control" type="text" name="gander" value="{{$userInfo->gander}}" />
+                                    <input disabled class="form-control" type="text" name="gander" value="{{old('gander',$userInfo->gander)}}" />
 
                                 </div>
                                 <div class="form-group">
                                     <label>Languages</label>
-                                    <input class="form-control" type="text" name="languages" value="{{$userInfo->languages}}"/>
+                                    <input class="form-control" type="text" name="languages" value="{{old('languages',$userInfo->languages)}}"/>
                                     @error('languages')
                                     <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -274,7 +274,7 @@
                             @csrf
                             <div class="form-group has-success">
                                 <label class="control-label" for="success">Image</label>
-                                <input type="file" class="form-control" id="success" name="image"/>
+                                <input type="file" class="form-control" id="success" name="image" "/>
                                 @error('image')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -282,7 +282,7 @@
 
                             <div class="form-group has-error">
                                 <label class="control-label" for="error">LInks</label>
-                                <input type="text" class="form-control" id="error" name="links"  />
+                                <input type="text" class="form-control" id="error" name="links" value= {{ old('links') }} />
                                 @error('links')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror

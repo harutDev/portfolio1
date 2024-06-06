@@ -16,6 +16,8 @@ class Post extends Model
         'user_id',
     ];
 
+
+
     public function additionalLinks(): HasOne
     {
         return $this->hasOne(Additional_links::class,'post_id','id');

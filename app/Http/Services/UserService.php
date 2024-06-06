@@ -16,7 +16,7 @@ class UserService implements ViewInterface, ColumnsInterface
             self::SURNAME => $userDTO->surname,
             self::ADDRESS => $userDTO->address,
             self::PHONE => $userDTO->phone,
-            self::AGE=> $userDTO->age,
+            self::AGE => $userDTO->age,
             self::LANGUAGES => $userDTO->languages,
         ]);
     }

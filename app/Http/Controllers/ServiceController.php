@@ -43,6 +43,16 @@ use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends  Controller implements ViewInterface, ColumnsInterface
 {
+    /**
+     * @param UserService $userService
+     * @param InformationsService $informationsService
+     * @param PostService $postService
+     * @param SkillsService $skillsService
+     * @param EducationsService $educationsService
+     * @param AdditionalLinksService $additionalLinksService
+     * @param ReadService $readService
+     * @param AuthService $authService
+     */
     public function __construct(
         protected UserService $userService, protected InformationsService $informationsService,
         protected PostService $postService, protected SkillsService $skillsService,
@@ -50,6 +60,11 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
         protected ReadService $readService, protected AuthService $authService
 
     ) {}
+
+    /**
+     * @param LoginRequest $request
+     * @return JsonResponse|RedirectResponse
+     */
     public function login(LoginRequest $request): JsonResponse|RedirectResponse
     {
         $loginDTO = new LoginDTO(
@@ -61,6 +76,11 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
 
         return redirect()->route('admin.adminDashboard');
     }
+
+    /**
+     * @param UpdateUserRequest $request
+     * @return RedirectResponse
+     */
     public function updateUser(UpdateUserRequest $request): RedirectResponse
     {
         $userDTO = new UserUpdateDTO(
@@ -77,10 +97,12 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
         return redirect()->back();
     }
 
+    /**
+     * @param UpdateAboutMeRequest $request
+     * @return RedirectResponse
+     */
     public function updateAboutMe(UpdateAboutMeRequest $request): RedirectResponse
     {
-
-
         $updateAboutMeDTO = new UpdateAboutMeDTO(
             $request->getAboutMe(),
             $request->getId()
@@ -90,9 +112,12 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
         return redirect()->back();
     }
 
+    /**
+     * @param CreateAboutMeRequest $request
+     * @return RedirectResponse
+     */
     public function createAboutMe(CreateAboutMeRequest $request): RedirectResponse
     {
-
         $createAboutMeDTO = new CreateAboutMeDTO(
             $request->getAboutMe(),
             $request->getId()
@@ -101,6 +126,11 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
 
         return redirect()->back();
     }
+
+    /**
+     * @param CreatePostRequest $request
+     * @return RedirectResponse
+     */
     public function createPost(CreatePostRequest $request): RedirectResponse
     {
         $createPostDTO = new CreatePostDTO(
@@ -112,6 +142,11 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
 
         return redirect()->back();
     }
+
+    /**
+     * @param CreatePostRequest $request
+     * @return RedirectResponse
+     */
     public function updatePost(CreatePostRequest $request): RedirectResponse
     {
         $updatePostDTO = new UpdatePostDTO(
@@ -126,6 +161,7 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
 
         return redirect()->back();
     }
+
     /**
      * @param CreateSkillRequest $request
      * @return RedirectResponse
@@ -140,6 +176,7 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
 
         return redirect()->back();
     }
+
     /**
      * @param CreateSkillRequest $request
      * @return RedirectResponse
@@ -154,6 +191,7 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
 
         return redirect()->back();
     }
+
     /**
      * @param CreateEducationRequest $request
      * @return RedirectResponse
@@ -168,6 +206,7 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
 
         return redirect()->back();
     }
+
     /**
      * @param UpdateEducationRequest $request
      * @return RedirectResponse
@@ -182,6 +221,7 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
 
         return redirect()->back();
     }
+
     /**
      * @param CreateLinkRequest $request
      * @return RedirectResponse
@@ -197,6 +237,7 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
 
         return redirect()->back();
     }
+
     /**
      * @param CreateLinkRequest $request
      * @return RedirectResponse
@@ -212,6 +253,11 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
 
         return redirect()->back();
     }
+
+    /**
+     * @param CreateImageRequest $request
+     * @return RedirectResponse
+     */
     public function createImage(CreateImageRequest $request): RedirectResponse
     {
         $imageName = $request->file('image')->getClientOriginalName();
@@ -225,11 +271,11 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
 
         return redirect()->back();
     }
+
     /**
      * @param CreateImageRequest $request
      * @return RedirectResponse
      */
-
     public function updateImage(CreateImageRequest $request): RedirectResponse
     {
         $postData = [
@@ -258,6 +304,7 @@ class ServiceController extends  Controller implements ViewInterface, ColumnsInt
 
         return redirect()->back();
     }
+
     /**
      * @param Request $request
      * @return RedirectResponse

@@ -20,15 +20,10 @@ interface ColumnsInterface
     const LANGUAGES= "languages";
     const ABOUT_ME= "about_me";
     const USER_ID= "user_id";
-    const POST_ID= "post_id";
     const ID= "id";
-    const EDUCATION= "education";
     const USER_AGENT= "user_agent";
     const REFERRER= "referrer";
     const VISIT_TIME= "visit_time";
     const IP_ADDRESS= "ip_address";
-
-
-
 }
 

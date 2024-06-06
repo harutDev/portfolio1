@@ -18,7 +18,7 @@ class ReadService implements ViewInterface, ColumnsInterface
     {
         $userInfo = User::query()->find(auth()->id());
 
-        if ($userInfo !== null) $userInfo->load(['visitors.notification','images','skills','posts','images']);
+        $userInfo?->load(['visitors.notification', 'images', 'skills', 'posts', 'images']);
 
         return view(self::VIEW_ADMIN_DASHBOARD,compact(
             'userInfo'
@@ -28,10 +28,10 @@ class ReadService implements ViewInterface, ColumnsInterface
     public function adminForm(): Factory|Application|View
     {
         $userInfo = User::query()->find(auth()->id());
-        $links=Additional_links::query()->get();
-        $file=Files::query()->get();
+        $links = Additional_links::query()->get();
+        $file = Files::query()->get();
 
-        if ($userInfo !== null) $userInfo->load(['educations','informations','skills','posts.additionalLinks','images']);
+        $userInfo?->load(['educations', 'informations', 'skills', 'posts.additionalLinks', 'images']);
 
         return view(self::VIEW_ADMIN_FORM,compact(
                 'userInfo','links','file'
@@ -42,10 +42,10 @@ class ReadService implements ViewInterface, ColumnsInterface
     public function adminTable(): Factory|Application|View
     {
         $userInfo = User::query()->first();
-        $links=Additional_links::query()->get();
+        $links = Additional_links::query()->get();
         $jobs = DB::table('failed_jobs')->get();
 
-        if ($userInfo !== null) $userInfo->load(['educations','informations','skills','posts']);
+        $userInfo?->load(['educations', 'informations', 'skills', 'posts']);
 
         return view(self::VIEW_ADMIN_TABLE,compact('userInfo', 'jobs', 'links'));
     }
